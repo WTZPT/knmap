@@ -1,0 +1,62 @@
+spring:
+  application:
+    name: cms
+  datasource:
+    druid:
+      initial-size: 5
+      max-active: 30
+      min-idle: 5
+      max-wait: 60000
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 30000
+      validation-query: SELETE 1 FROM DUAL
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 50
+      filters: stat,wall
+      connection-properties: druid.stat.mergeSql = true; druild.stat.slowSqlMillis=500
+      use-global-data-source-stat: true
+      url: jdbc:mysql://localhost:3306/knmap?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT%2B8
+      username: root
+      password: root
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      stat-view-servlet:
+        login-username: admin
+        login-password: admin
+      web-stat-filter:
+        exclusions: '*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*'
+  thymeleaf:
+    prefix: classpath:/templates/
+    check-template-location: true
+    suffix: .html
+    encoding: UTF-8
+    cache: false
+
+# Mybatis-plus����
+mybatis-plus:
+  mapper-locations: classpath:mapper/*.xml
+  typeAliasesPackage: team.ag.knmap.entity
+  configuration:
+    map-underscore-to-camel-case: true
+  global-config:
+    db-config:
+      id-type: auto
+      field-strategy: not_null
+      table-underline: true
+
+
+
+# webmagic配置
+selenuim_config: D:/config.ini
+webdriver:
+  chrome:
+    driver: C:\\Program Files (x86)\\Google\\Chrome\\Application\\chromedriver.exe
+
+
+
+
+
+
+
