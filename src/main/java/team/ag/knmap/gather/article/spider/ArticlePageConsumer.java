@@ -74,6 +74,7 @@ public class ArticlePageConsumer implements PageConsumer {
 
     /**
      * 处理页面，抽取三元组
+     * 根据 xpathList中的xpath依次获取页面上三元组，用“~”做为切割标识
      * @param page
      * @param info
      *
@@ -86,15 +87,21 @@ public class ArticlePageConsumer implements PageConsumer {
         String sobject = "";
         String pobject = "";
         String oobject = "";
+        String objects,objectp,objecto;
         for(int i = 0; i < sxpathList.length; i++) {
             if(!isBlank(sxpathList[i] ) && !isBlank(pxpathList[i] ) && !isBlank(pxpathList[i])  ) {
-                   sobject += parser.getContent(page,sxpathList[i],ArticleSpiderConstant.MATCH_TYPE_XPATH);
-                   pobject += parser.getContent(page,pxpathList[i],ArticleSpiderConstant.MATCH_TYPE_XPATH);
-                   oobject += parser.getContent(page,oxpathList[i],ArticleSpiderConstant.MATCH_TYPE_XPATH);
-                   if(i == sxpathList.length - 1) {break;}
-                   sobject+="~";
-                   pobject+="~";
-                   oobject+="~";
+                objects =  parser.getContent(page,sxpathList[i],ArticleSpiderConstant.MATCH_TYPE_XPATH);
+                objectp =  parser.getContent(page,pxpathList[i],ArticleSpiderConstant.MATCH_TYPE_XPATH);
+                objecto =  parser.getContent(page,oxpathList[i],ArticleSpiderConstant.MATCH_TYPE_XPATH);
+                   if(!isBlank(objects) && !isBlank(objecto) && !isBlank(objectp)) {
+                       sobject += objects;
+                       pobject += objectp;
+                       oobject += objecto;
+                       if(i == sxpathList.length - 1) {break;}
+                       sobject+="~";
+                       pobject+="~";
+                       oobject+="~";
+                   }
             }
         }
         page.putField(ArticleSpiderConstant.SPO_S,sobject);
