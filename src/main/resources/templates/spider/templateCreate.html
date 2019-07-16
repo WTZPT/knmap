@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:with="title='创建模板',active='templateCreate'">
+<header th:replace="comm/header::headerFragment(${title},${active})"></header>
+<body class="fixed-left">
+<div th:replace="comm/header::header-body"></div>
+<div class="content-page">
+    <div class="content">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="m-b-30"id="previewArea">
+                    </div>
+                </div>
+            </div>
+            <div class="row" >
+                <h4 class="header-title m-t-0 m-b-30">新增爬虫信息</h4>
+                <form class="form-horizontal" role="form" id="spiderinfo_form" >
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">显示名称</label>
+                        <div class="col-md-5">
+                            <input name="displayName" type="text" class="form-control" value="">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">数据库</label>
+                        <div class="col-md-5">
+                            <input name="dbName" type="text" class="form-control" value="">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">入口页面</label>
+                        <div class="col-md-5">
+                            <input name="startUrl" type="text" class="form-control" value="">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">列表下一页链接正则</label>
+                        <div class="col-md-5">
+                            <input name="listPageUrlReg" type="text" class="form-control" value="">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label" style="color: #ff9955">列表区域预览网址</label>
+                        <div class="col-md-5">
+                            <input name="preViewArticleZoneUrl" type="text" class="form-control" value="">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">文章链接正则</label>
+                        <div class="col-md-5">
+                            <input name="articleUrlReg" type="text" class="form-control" value="">
+                        </div>
+                        <div class="col-md-1">
+                            <button type="button" class="form-control"
+                                    onclick="doPreview('文章链接预览','preViewArticleZoneUrl','listUrl','articleUrlReg','reg')">预览
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">列表区域文章Xpath</label>
+                        <div class="col-md-5">
+                            <input name="articleUrlXpath" type="text" class="form-control" value="">
+                        </div>
+                        <div class="col-md-1">
+                            <button type="button" class="form-control"
+                                    onclick="doPreview('列表区域文章Xpath预览','preViewArticleZoneUrl','listUrl','articleUrlXpath','xpath')">预览
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label" style="color: #ff9955">文章预览网址</label>
+                        <div class="col-md-5">
+                            <input name="preViewArticleUrl" type="text" class="form-control" value="">
+                        </div>
+                    </div>
+                    <div id="change">
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">SP0_S Xpath</label>
+                            <div class="col-md-5">
+                                <input name="articleSXpath" type="text" class="form-control" value="">
+                            </div>
+                            <div class="col-md-1">
+                                <button type="button" class="form-control"
+                                        onclick="doPreview('SP0_SXpath预览','preViewArticleUrl','title','titleXpath','xpath')">预览
+                                </button>
+                            </div>
+                        </div>
+                        <p><span id="add">新增一项</span></p >
+
+                        <p><span id="remove">减少一项</span></p>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">SP0_P Xpath</label>
+                            <div class="col-md-5">
+                                <input name="articlePXpath" type="text" class="form-control" value="">
+                            </div>
+                            <div class="col-md-1">
+                                <button type="button" class="form-control"
+                                        onclick="doPreview('SP0_PXpath预览','preViewArticleUrl','publishTime','timePostXpath','xpath')">预览
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">SP0_O Xpath</label>
+                            <div class="col-md-5">
+                                <input name="articleOXpath" type="text" class="form-control" value="">
+                            </div>
+                            <div class="col-md-1">
+                                <button type="button" class="form-control"
+                                        onclick="doPreview('SP0_OXpath预览','preViewArticleUrl','content','contentXpath','xpath')">预览
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">线程数</label>
+                        <div class="col-md-5">
+                            <input name="thread" type="number" class="form-control" value="3">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">重试次数</label>
+                        <div class="col-md-5">
+                            <input name="retry" type="number" class="form-control" value="2">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">睡眠时长</label>
+                        <div class="col-md-5">
+                            <input name="sleep" type="number" class="form-control" value="0">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">最大爬取数</label>
+                        <div class="col-md-5">
+                            <input name="maxPageGather" type="number" class="form-control" value="0">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">超时时间</label>
+                        <div class="col-md-5">
+                            <input name="timeout" type="number" class="form-control" value="5000">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">是否爬取第一页</label>
+                        <div class="col-md-5">
+                            <input name="gatherFirstPage" type="number" class="form-control" value="1">
+                            <p> 是否只抓取首页 0为不抓 1为抓</p>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">页面下载器</label>
+                        <div class="col-md-5">
+                            <input name="dynamicSite" type="number" class="form-control" value="0">
+                            <p>0为常规下载器  1为爬取动态网页下载器</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">编码</label>
+                        <div class="col-md-5">
+                            <input name="charset" type="text" class="form-control" value="UTF-8">
+                        </div>
+                    </div>
+                    <button type="button" onclick="doSave()"
+                            class="btn btn-purple waves-effect waves-light">提交
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+<script src="/js/jquery.min.js"></script>
+<script src="/js/jquery.serializejson.min.js"></script>
+<script src="/plugins/bootstrap-sweetalert/sweet-alert.min.js"></script>
+<script src="/custom/spiderinfo.js"></script>
+<script>
+    $(function () {
+        $("#add").click(function (e)
+        {
+
+            $("#change").append('<div class="form-group"><label class="col-md-2 control-label">SP0_SXpath</label><div class="col-md-5"><input name="articleSXpath"type="text"class="form-control"value=""></div><div class="col-md-1"><button type="button"class="form-control"onclick="doPreview("SP0_SXpath预览","preViewArticleUrl","title","titleXpath","xpath")">预览</button></div></div><div class="form-group"><label class="col-md-2 control-label">SP0_PXpath</label><div class="col-md-5"><input name="articlePXpath"type="text"class="form-control"value=""></div><div class="col-md-1"><button type="button"class="form-control"onclick="doPreview("SP0_PXpath预览","preViewArticleUrl","publishTime","timePostXpath","xpath")">预览</button></div></div><div class="form-group"><label class="col-md-2 control-label">SP0_OXpath</label><div class="col-md-5"><input name="articleOXpath"type="text"class="form-control"value=""></div><div class="col-md-1"><button type="button"class="form-control"onclick="doPreview("SP0_OXpath预览","preViewArticleUrl","content","contentXpath","xpath")">预览</button></div></div>')
+        });
+
+        $("#remove").click(function (e)
+        {
+            if($("#change>div").size() <= 3){
+            } else{
+                $("#change>div").last().remove();
+                $("#change>div").last().remove();
+                $("#change>div").last().remove();
+            }
+        });
+    });
+
+</script>
+</html>

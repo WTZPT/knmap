@@ -21,9 +21,12 @@ public class SpiderPageController {
     SpiderService spiderService;
     @GetMapping(value = {"create"})
     public String create() {
-
         return "spider/create";
 
+    }
+    @GetMapping(value = {"templateCreate"})
+    public String templateCreate() {
+        return "spider/templateCreate";
     }
 
     @PostMapping(value = "/spiderinfo", consumes = "application/json")

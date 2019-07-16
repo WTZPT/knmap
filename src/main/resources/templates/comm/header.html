@@ -25,11 +25,11 @@
             <div class="text-center p-t-10" style="margin: 0 auto;">
                 <div class="pull-left" style="padding-left: 10px;">
                     <a th:href="@{/index}">
-                        <img th:src="@{/images/logo.png}" width="50" height="50"/>
+                        <span style="font-size: 28px; color: #2f353f; line-height: 50px;">知识图谱构建平台</span>
                     </a>
                 </div>
                 <div class="pull-left" style="padding-left: 10px;">
-                    <span style="font-size: 28px; color: #2f353f; line-height: 50px;">知识图谱构建平台</span>
+
                 </div>
             </div>
         </div>
@@ -51,16 +51,30 @@
         <div class="sidebar-inner slimscrollleft">
             <div id="sidebar-menu">
                 <ul>
-
                     <li th:class="${active}=='home'?'active':''">
                         <a th:href="@{/index}"
                            th:class="${active}=='home'?'waves-effect active':'waves-effect'"><i
-                                class="fa fa-dashboard" aria-hidden="true"></i><span> 仪表盘 </span></a>
+                                class="fa fa-desktop" aria-hidden="true"></i><span> 首页 </span></a>
+                    </li>
+                    <li th:class="${active}=='templateClassCreate'?'active':'' ">
+                        <a th:href="@{/templateCreate}"
+                           th:class="${active}=='templateClassCreate'?'aves-effect active':'waves-effect'"><i
+                                class="fa fa-copy" aria-hidden="true"></i><span> 创建模板类 </span></a>
+                    </li>
+                    <li th:class="${active}=='templateCreate'?'active':'' ">
+                        <a th:href="@{/templateCreate}"
+                            th:class="${active}=='templateCreate'?'aves-effect active':'waves-effect'"><i
+                                class="fa fa-file-o" aria-hidden="true"></i><span> 创建模板 </span></a>
                     </li>
                     <li th:class="${active}=='create'?'active':''">
                         <a th:href="@{/create}"
                            th:class="${active}=='create'?'waves-effect active':'waves-effect'"><i
-                                class="fa fa-pencil-square-o" aria-hidden="true"></i><span> 创建采集器 </span></a>
+                                class="fa fa-cogs" aria-hidden="true"></i><span> 创建采集器 </span></a>
+                    </li>
+                    <li th:class="${active}=='templateCreate'?'active':'' ">
+                        <a th:href="@{/templateCreate}"
+                           th:class="${active}=='templateCreate'?'aves-effect active':'waves-effect'"><i
+                                class="fa fa-search" aria-hidden="true"></i><span> 检索界面 </span></a>
                     </li>
                     <!--
                     <li th:class="${active}=='article'?'active':''">
