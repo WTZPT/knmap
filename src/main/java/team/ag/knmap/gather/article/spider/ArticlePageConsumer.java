@@ -3,6 +3,7 @@ package team.ag.knmap.gather.article.spider;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import team.ag.knmap.entity.SpiderInfo;
+import team.ag.knmap.entity.Template;
 import team.ag.knmap.gather.commons.PageConsumer;
 import team.ag.knmap.util.TextParser;
 import us.codecraft.webmagic.Page;
@@ -21,7 +22,7 @@ public class ArticlePageConsumer implements PageConsumer {
     private static ArticleSpiderParser parser = new ArticleSpiderParser();
 
     @Override
-    public void accept(Page page, SpiderInfo info) {
+    public void accept(Page page, Template info) {
         page.putField("dbName",info.getDbName());
         try{
             //列表页
@@ -43,7 +44,7 @@ public class ArticlePageConsumer implements PageConsumer {
      * @param page
      * @param info
      */
-    private static void resolveListPage(Page page,SpiderInfo info){
+    private static void resolveListPage(Page page,Template info){
         //使用正则表达式来寻找下一页
         List<String> nextPageUrls = parser.getListNextPageUrls(
                 page,info.getListPageUrlReg(),
@@ -79,7 +80,7 @@ public class ArticlePageConsumer implements PageConsumer {
      * @param info
      *
      */
-    private static void resolverSPO(Page page,SpiderInfo info) {
+    private static void resolverSPO(Page page,Template info) {
 
         String[] sxpathList = TextParser.splitMatchWithWaterLine(info.getArticleSXpath());
         String[] pxpathList = TextParser.splitMatchWithWaterLine(info.getArticlePXpath());

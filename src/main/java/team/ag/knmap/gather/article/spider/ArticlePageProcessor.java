@@ -2,6 +2,7 @@ package team.ag.knmap.gather.article.spider;
 
 import org.apache.commons.lang3.StringUtils;
 import team.ag.knmap.entity.SpiderInfo;
+import team.ag.knmap.entity.Template;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.processor.PageProcessor;
@@ -13,10 +14,10 @@ public class ArticlePageProcessor implements PageProcessor {
 
     private Site site;
 
-    private SpiderInfo info;
+    private Template info;
 
     private ArticlePageConsumer articlePageConsumer = new ArticlePageConsumer();
-    ArticlePageProcessor(SpiderInfo info){
+    ArticlePageProcessor(Template info){
         this.site = Site.me().setTimeOut(100000)
                 .setRetrySleepTime(info.getRetry()).setSleepTime(info.getSleep())
                 .setCharset(StringUtils.isBlank(info.getCharset()) ? null : info.getCharset());

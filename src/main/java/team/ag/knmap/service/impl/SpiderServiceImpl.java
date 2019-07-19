@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import team.ag.knmap.entity.SpiderInfo;
+import team.ag.knmap.entity.Template;
 import team.ag.knmap.gather.article.manger.TaskManager;
 import team.ag.knmap.mapper.SpiderInfoMapper;
 import team.ag.knmap.service.SpiderService;
@@ -18,7 +19,7 @@ public class SpiderServiceImpl  extends ServiceImpl<SpiderInfoMapper, SpiderInfo
     TaskManager taskManager;
 
     @Override
-    public void run(SpiderInfo spiderInfo){
+    public void run(Template spiderInfo){
         taskManager.startSpider(spiderInfo);
     }
 }

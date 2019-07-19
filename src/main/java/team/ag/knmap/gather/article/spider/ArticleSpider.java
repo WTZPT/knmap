@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import redis.clients.jedis.JedisPool;
 import team.ag.knmap.entity.SpiderInfo;
+import team.ag.knmap.entity.Template;
 import team.ag.knmap.gather.article.pipeline.DbPipeline;
 import team.ag.knmap.gather.article.scheduler.RedisScheduler;
 import team.ag.knmap.gather.article.selenium.MySeleniumDownloader;
@@ -34,7 +35,7 @@ public class ArticleSpider implements Serializable {
     @Value("${selenuim_config}")
     private String selenuim_config;
 
-    public String start(String uuid, SpiderInfo info) {
+    public String start(String uuid, Template info) {
         Spider spider = makeSpider(uuid,info);
         spider.addPipeline(dbPipeline.setDatabase(info.getDbName()));
         if(info.getDynamicSite().equals(ArticleSpiderConstant.DYNAMICCRAWLING)) {
@@ -66,7 +67,7 @@ public class ArticleSpider implements Serializable {
      *
      * @param info 抓取模板
      */
-    private Spider makeSpider(String uuid, SpiderInfo info) {
+    private Spider makeSpider(String uuid, Template info) {
         Spider spider = new Spider(new ArticlePageProcessor(info)).thread(info.getThread())
                             .setUUID(uuid);
         return spider;                                                                                          

@@ -1,6 +1,7 @@
 package team.ag.knmap.gather.commons;
 
 import team.ag.knmap.entity.SpiderInfo;
+import team.ag.knmap.entity.Template;
 import us.codecraft.webmagic.Page;
 
 /**
@@ -11,5 +12,5 @@ import us.codecraft.webmagic.Page;
  */
 @FunctionalInterface
 public interface PageConsumer {
-    void accept(Page page, SpiderInfo info);
+    void accept(Page page, Template info);
 }

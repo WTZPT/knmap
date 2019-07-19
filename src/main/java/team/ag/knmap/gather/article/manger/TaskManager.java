@@ -6,6 +6,7 @@ import org.assertj.core.util.Preconditions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import team.ag.knmap.entity.SpiderInfo;
+import team.ag.knmap.entity.Template;
 import team.ag.knmap.gather.article.spider.ArticleSpider;
 import us.codecraft.webmagic.Spider;
 
@@ -36,9 +37,9 @@ public class TaskManager {
      * @param info
      * @return
      */
-    public String startSpider(SpiderInfo info){
+    public String startSpider(Template info){
         // 当断点之后爬虫的uuid会重新随机生成，无法实现去重和断点重爬，所以将uuid与info.name和info.id绑定
-        final String uuid = info.getId() + "_" + info.getDisplayName() + "_" + info.getName();
+        final String uuid = info.getId() + "_" + info.getDisplayName() + "_" + info.getClassId();
         // 判断该任务是否已经存在
         boolean running = spiderMap.containsKey(uuid);
 
