@@ -55,7 +55,7 @@ public class SpiderPageController {
            Template updateTemplate = new Template();
            updateTemplate.setApplied(true);
            templateService.updateById(updateTemplate);
-           spiderService.run(template);
+           //spiderService.run(template);
            return ServerResponse.createBySuccessMessage(template.getDisplayName()+"进入采集转态！");
        } else {
            return ServerResponse.createByErrorMessage(template.getDisplayName() + "已经进入采集器，请勿重复添加！");

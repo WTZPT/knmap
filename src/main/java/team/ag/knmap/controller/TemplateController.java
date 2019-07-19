@@ -12,7 +12,8 @@ import team.ag.knmap.entity.TemplateClass;
 import team.ag.knmap.service.TemplateClassService;
 import team.ag.knmap.service.TemplateService;
 import team.ag.knmap.util.GetUUID;
-import team.ag.knmap.vo.TemplateClassAndTemplateVo;
+import team.ag.knmap.vo.TemplateAndClassApplingVo;
+import team.ag.knmap.vo.TemplateAndClassTreeVo;
 import team.ag.knmap.vo.TemplateClassVo;
 import team.ag.knmap.vo.TemplateVo;
 
@@ -134,17 +135,40 @@ public class TemplateController {
     }
 
     /**
+     * 获取没有应用过模板
+     * @return
+     */
+    @GetMapping("/getApplingTemplates")
+    public ServerResponse getTemplateAndClass() {
+
+        List<Template> templateList = templateService.findApplingTemplate();
+        List<TemplateAndClassApplingVo> templateAndClassApplingVos = new ArrayList<>();
+
+        if(!CollectionUtils.isEmpty(templateList)) {
+            for(Template template : templateList) {
+                TemplateAndClassApplingVo templateAndClassApplingVo = new TemplateAndClassApplingVo();
+                TemplateClass templateClass = templateClassServiceImpl.getById(template.getClassId());
+                templateAndClassApplingVo.setFieldName(templateClass.getFieldName());
+                templateAndClassApplingVo.setDiplayName(template.getDisplayName());
+                templateAndClassApplingVo.setId(template.getId());
+                templateAndClassApplingVo.setStartUrl(template.getStartUrl());
+                templateAndClassApplingVos.add(templateAndClassApplingVo);
+            }
+        }
+        return ServerResponse.createBySuccess(templateAndClassApplingVos);
+    }
+    /**
      * 获取模板类以及子模板
      * @return
      */
     @GetMapping("/getTemplatesAndClass")
     public ServerResponse getTemplatesAndClass(){
         List<TemplateClass> templateClassList = templateClassServiceImpl.list(new QueryWrapper<TemplateClass>());
-        List<TemplateClassAndTemplateVo> templateClassAndTemplateVos = new ArrayList<TemplateClassAndTemplateVo>();
+        List<TemplateAndClassTreeVo> templateClassAndTemplateVos = new ArrayList<TemplateAndClassTreeVo>();
 
         if(!CollectionUtils.isEmpty(templateClassList)) {
             for(TemplateClass templateClass : templateClassList) {
-                TemplateClassAndTemplateVo templateClassAndTemplateVo = new TemplateClassAndTemplateVo();
+                TemplateAndClassTreeVo templateClassAndTemplateVo = new TemplateAndClassTreeVo();
                 List<TemplateVo> templateVoList = new ArrayList<>();
                 templateClassAndTemplateVo.setFieldName(templateClass.getFieldName());
                 List<Template> templateList = templateService.findTemplateByClassId(templateClass.getId());

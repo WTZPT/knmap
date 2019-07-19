@@ -27,6 +27,13 @@ public class TemplateServiceImpl  extends ServiceImpl<TemplateMapper, Template> 
         return list(templateQueryWrapper);
     }
 
-
+    //获取没用使用过的模板
+    @Override
+    public List<Template> findApplingTemplate() {
+        QueryWrapper<Template> templateQueryWrapper = new QueryWrapper<>();
+        templateQueryWrapper.lambda()
+                .eq(Template::isApplied,false);
+        return list(templateQueryWrapper);
+    }
 
 }

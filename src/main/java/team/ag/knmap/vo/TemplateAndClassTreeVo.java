@@ -8,7 +8,7 @@ import java.util.List;
  * @Author weitangzhao
  **/
 @Data
-public class TemplateClassAndTemplateVo {
+public class TemplateAndClassTreeVo {
     private String fieldName;
     private List<TemplateVo> templateVoList;
 }

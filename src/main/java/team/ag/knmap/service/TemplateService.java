@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface TemplateService extends IService<Template> {
     List<Template> findTemplateByClassId(long id);
+
+    List<Template> findApplingTemplate();
 }
