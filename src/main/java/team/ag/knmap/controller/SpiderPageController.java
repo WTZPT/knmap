@@ -49,12 +49,11 @@ public class SpiderPageController {
      */
     @PostMapping("/start")
     @ResponseBody
-    public ServerResponse startSpider(@RequestBody Long id) {
+    public ServerResponse startSpider(@RequestParam Long id) {
        Template template =  templateService.getById(id);
        if(!template.isApplied()) {
-           Template updateTemplate = new Template();
-           updateTemplate.setApplied(true);
-           templateService.updateById(updateTemplate);
+           template.setApplied(true);
+           templateService.updateById(template);
            //spiderService.run(template);
            return ServerResponse.createBySuccessMessage(template.getDisplayName()+"进入采集转态！");
        } else {
