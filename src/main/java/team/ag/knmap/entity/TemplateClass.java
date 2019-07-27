@@ -14,5 +14,4 @@ public class TemplateClass {
     private long id;
     private String fieldName;
     private String dbName;
-
 }

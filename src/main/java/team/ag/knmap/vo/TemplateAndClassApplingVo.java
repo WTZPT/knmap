@@ -12,4 +12,5 @@ public class TemplateAndClassApplingVo {
     private String fieldName;
     private String diplayName;
     private String startUrl;
+    private boolean appling;
 }

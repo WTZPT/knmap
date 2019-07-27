@@ -37,7 +37,7 @@ public class ArticleSpider implements Serializable {
 
     public String start(String uuid, Template info) {
         Spider spider = makeSpider(uuid,info);
-        spider.addPipeline(dbPipeline.setDatabase(info.getDbName()));
+        spider.addPipeline(dbPipeline.setDatabase(info.getDbName(),info.getClassId(),info.getId()));
         if(info.getDynamicSite().equals(ArticleSpiderConstant.DYNAMICCRAWLING)) {
             LOG.info("启用Selenium下载器。");
             spider.setDownloader(new MySeleniumDownloader(chromeDriverPath));

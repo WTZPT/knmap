@@ -13,7 +13,7 @@ import java.util.List;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
 /**
- * @Author weitangzhao
+ * @Author
  **/
 public class ArticlePageConsumer implements PageConsumer {
 
@@ -30,7 +30,7 @@ public class ArticlePageConsumer implements PageConsumer {
                 resolveListPage(page,info);
                 page.setSkip(true);
                 LOG.info("Skip URL: "+page.getUrl());
-            } else {
+            } else if(page.getUrl().regex(info.getArticleUrlReg()).match()){
                 //获取三元组
                 resolverSPO(page,info);
             }
@@ -89,19 +89,23 @@ public class ArticlePageConsumer implements PageConsumer {
         String pobject = "";
         String oobject = "";
         String objects,objectp,objecto;
+        boolean flag = false;
         for(int i = 0; i < sxpathList.length; i++) {
             if(!isBlank(sxpathList[i] ) && !isBlank(pxpathList[i] ) && !isBlank(pxpathList[i])  ) {
                 objects =  parser.getContent(page,sxpathList[i],ArticleSpiderConstant.MATCH_TYPE_XPATH);
                 objectp =  parser.getContent(page,pxpathList[i],ArticleSpiderConstant.MATCH_TYPE_XPATH);
                 objecto =  parser.getContent(page,oxpathList[i],ArticleSpiderConstant.MATCH_TYPE_XPATH);
                    if(!isBlank(objects) && !isBlank(objecto) && !isBlank(objectp)) {
+                       if(flag) {
+                           sobject+="~";
+                           pobject+="~";
+                           oobject+="~";
+                       } else {
+                           flag = true;
+                       }
                        sobject += objects;
                        pobject += objectp;
                        oobject += objecto;
-                       if(i == sxpathList.length - 1) {break;}
-                       sobject+="~";
-                       pobject+="~";
-                       oobject+="~";
                    }
             }
         }
@@ -110,19 +114,6 @@ public class ArticlePageConsumer implements PageConsumer {
         page.putField(ArticleSpiderConstant.SPO_O,oobject);
     }
 
-    private static void obtainSPO(Page page,String xpath,String SPO,SpiderInfo info){
-        String Object = "";
-        if(!isBlank(info.getArticleSXpath())) {
-            Object = parser.getContent(page,
-                    info.getArticleSXpath(),
-                    ArticleSpiderConstant.MATCH_TYPE_XPATH);
-        }else if(!isBlank(info.getArticleSReg())) {
-            Object = parser.getContent(page,
-                    info.getArticleSReg(),
-                    ArticleSpiderConstant.MATCH_TYPE_REG);
-        }
 
-        page.putField(SPO,Object);
-    }
 
 }

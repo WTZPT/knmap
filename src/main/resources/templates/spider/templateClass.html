@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" th:with="title='创建领域类',active='templateClassCreate'"   >
+<head>
+
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <!-- <script src="jquery.min.js"></script> -->
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="shortcut icon" th:href="@{/admin/images/favicon.png}"/>
+    <link th:href="@{//cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css}" rel="stylesheet" type="text/css"/>
+    <link th:href="@{//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css}" rel="stylesheet"/>
+    <link th:href="@{/comm/css/style.min.css}" rel="stylesheet" type="text/css"/>
+    <link th:href="@{//cdn.bootcss.com/limonte-sweetalert2/6.4.1/sweetalert2.min.css}" rel="stylesheet"/>
+    <meta charset="UTF-8">
+
+    <script>
+        // 修改弹出框的title, 显示弹框
+
+    </script>
+</head>
+<body>
+<div th:replace="comm/header::header-body"></div>
+<div style=" margin-top:70px;margin-left: 250px;">
+    <table class="table  table-condensed">
+        <thead>
+        <tr>
+            <th>序号</th>
+            <th>领域名</th>
+            <th>操作</th>
+            <th><button onclick="ShowCreateModal()" >增加</button></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="one:${model.list}">
+            <td th:text="${oneStat.count}">1</td>
+            <td th:text="${one.fieldName}" th:id="|name${one.id}|"></td>
+            <td>
+                <button  type="button" class="info" th:onclick="|ShowUpdateModal('${one.id}')|" >修改领域名</button>
+               <!--<button th:onclick="'updatelateClass('+${one.id}+' '+|, ${one.fieldName} )|" type="button" class="info">修改领域名</button>-->
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+
+<div tabindex="-1"  class="modal fade" id="createFileMModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog"  role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="createFileTitle">创建领域</h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" >
+                <form  id="templateclassCreate_form">
+                    <div class="form-group">
+                        <label  class="col-form-label">领域名</label>
+                        <input type="text"  class="form-control" id="fieldName">
+                        <br>
+                        <button type="button" class="btn btn-primary" onclick="createplateClass()">创建</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div tabindex="-1"  class="modal fade" id="updateFileModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog"  role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="updatefielddNameTitle">更改领域名</h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" >
+                <form >
+                    <div class="form-group">
+                        <label  class="col-form-label">原领域名</label>
+                        <input type="text" disabled="disabled" id="className">
+                        <br>
+                        <label  class="col-form-label">新领域名</label>
+                        <input type="text"  class="form-control" id="updatefieldName">
+                        <input type="hidden" id="classId">
+                        <br>
+                        <button type="button" class="btn btn-primary" onclick="UpdatelateClass()">更改</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="/js/jquery.serializejson.min.js"></script>
+<script src="/custom/template.js"></script>
+</html>

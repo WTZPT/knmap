@@ -3,6 +3,9 @@ package team.ag.knmap.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.apache.juli.logging.Log;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
@@ -12,10 +15,8 @@ import team.ag.knmap.entity.TemplateClass;
 import team.ag.knmap.service.TemplateClassService;
 import team.ag.knmap.service.TemplateService;
 import team.ag.knmap.util.GetUUID;
-import team.ag.knmap.vo.TemplateAndClassApplingVo;
-import team.ag.knmap.vo.TemplateAndClassTreeVo;
-import team.ag.knmap.vo.TemplateClassVo;
-import team.ag.knmap.vo.TemplateVo;
+import team.ag.knmap.util.TextParser;
+import team.ag.knmap.vo.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +28,7 @@ import java.util.List;
 @RequestMapping("/template")
 public class TemplateController {
 
+    private static final Logger log = LogManager.getLogger(TemplateController.class);
     @Autowired
    TemplateClassService templateClassServiceImpl;
 
@@ -108,16 +110,52 @@ public class TemplateController {
 
     /**
      * 创建模板
-     * @param template
+     * @param templateRequestBody)
      * @return
      */
     @PostMapping("/createTemplate")
-    public ServerResponse createTemplate(@RequestBody Template template){
+    public ServerResponse createTemplate(@RequestBody TemplateRequestVo templateRequestBody){
+        Template template = new Template();
+        template.setClassId(Long.valueOf(templateRequestBody.getClassId()));
+        template.setDisplayName(templateRequestBody.getDisplayName());
+        template.setThread(Integer.valueOf(templateRequestBody.getThread()));
+        template.setRetry(Integer.valueOf(templateRequestBody.getRetry()));
+        template.setSleep(Integer.valueOf(templateRequestBody.getSleep()));
+        template.setMaxPageGather(Integer.valueOf(templateRequestBody.getMaxPageGather()));
+        template.setTimeout(Integer.valueOf(templateRequestBody.getTimeout()));
+        template.setStartUrl(templateRequestBody.getStartUrl());
+        template.setListPageUrlReg(templateRequestBody.getListPageUrlReg());
+        template.setArticleUrlReg(templateRequestBody.getArticleUrlReg());
+        template.setArticleUrlXpath(templateRequestBody.getArticleUrlXpath());
+        template.setCharset(templateRequestBody.getCharset());
+        template.setDynamicSite(Integer.valueOf(templateRequestBody.getDynamicSite()));
+        String sXpath="",pXpath="",oXpath="";
+        boolean flag = false;
+        for(SPO spo  : templateRequestBody.getSpo()) {
+            if(spo.getArticleSXpath() != null && spo.getArticlePXpath() != null && spo.getArticleOXpath()!=null) {
+                if(flag) {
+                    sXpath += "~";
+                    pXpath += "~";
+                    oXpath += "~";
+                } else {
+                    flag = true;
+                }
+                sXpath += spo.getArticleSXpath();
+                pXpath += spo.getArticlePXpath();
+                oXpath +=  spo.getArticleOXpath();
+            }
+        }
+
+        template.setArticleSXpath(sXpath);
+        template.setArticlePXpath(pXpath);
+        template.setArticleOXpath(oXpath);
+
         if(templateService.save(template)) {
             return ServerResponse.createBySuccessMessage("创建成功！");
         } else {
             return ServerResponse.createByErrorMessage("创建失败！");
         }
+
     }
 
     /**

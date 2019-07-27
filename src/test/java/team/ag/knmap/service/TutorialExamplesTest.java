@@ -1,5 +1,7 @@
 package team.ag.knmap.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.franz.agraph.repository.AGCatalog;
 import com.franz.agraph.repository.AGRepositoryConnection;
 import com.franz.agraph.repository.AGServer;
@@ -12,6 +14,7 @@ import org.eclipse.rdf4j.repository.RepositoryResult;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import team.ag.knmap.KnmapApplicationTests;
+import team.ag.knmap.entity.Triad;
 import team.ag.knmap.gather.article.pipeline.DbPipeline;
 
 import java.util.List;
@@ -27,6 +30,9 @@ public class TutorialExamplesTest extends KnmapApplicationTests {
     private static final String PASSWORD = "xyzzy";
     @Autowired
     TutorialExamples tutorialExamples ;
+
+    @Autowired
+    TriadService triadService;
 
     @Test
     public void example1() throws Exception {
@@ -61,7 +67,6 @@ public class TutorialExamplesTest extends KnmapApplicationTests {
             IRI SPO_S = vf.createIRI("http://example.org/s/" + s[i]);
             IRI SPO_P = vf.createIRI("http://example.org/ontology/" + p[i]);
             IRI SPO_O = vf.createIRI("http://example.org/o/" + o[i]);
-
             agRepository.add(SPO_S, SPO_P, SPO_O);
         }
 
@@ -75,6 +80,30 @@ public class TutorialExamplesTest extends KnmapApplicationTests {
         while (result.hasNext()) {
             Statement st = result.next();
             LOG.info(st);
+        }
+    }
+
+    @Test
+    public void dataProcess() throws Exception{
+        IPage<Triad> triadIPage = triadService.page(new Page<Triad>(4,2),null);
+        AGValueFactory vf = agRepository.getRepository().getValueFactory();
+        for(Triad triad : triadIPage.getRecords()) {
+               String o =  triad.getSpoO();
+                String p = triad.getSpoP();
+                String s = triad.getSpoS();
+                if(o != "") {
+                    IRI SPO_S = vf.createIRI("http://example.org/company/"+ s);
+                    IRI SPO_P = vf.createIRI("http://example.org/ontology/" + p);
+                    IRI SPO_O ;
+                    if(p == "所属地域"){
+                        SPO_O  = vf.createIRI("http://example.org/area/" + o);
+                    } else if(p == "英文名称"){
+                        SPO_O  = vf.createIRI("http://example.org/name/" + o);
+                    } else {
+                        SPO_O  = vf.createIRI("http://example.org/people/" + o);
+                    }
+                    agRepository.add(SPO_S, SPO_P, SPO_O);
+                }
         }
     }
 }

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" th:with="title='创建模板',active='create'">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:with="title='创建模板',active='templateCreate'">
     <header th:replace="comm/header::headerFragment(${title},${active})"></header>
+    <link th:href="@{//cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css}" rel="stylesheet" type="text/css"/>
     <body class="fixed-left">
         <div th:replace="comm/header::header-body"></div>
         <div class="content-page">
@@ -13,18 +14,21 @@
                         </div>
                     </div>
                     <div class="row" >
-                        <h4 class="header-title m-t-0 m-b-30">新增爬虫信息</h4>
+                        <h3 class="header-title m-t-0 m-b-30">定制模板</h3>
                         <form class="form-horizontal" role="form" id="spiderinfo_form" >
                             <div class="form-group">
-                                <label class="col-md-2 control-label">显示名称</label>
+                                <label class="col-md-2 control-label">选择模板领域</label>
                                 <div class="col-md-5">
-                                    <input name="displayName" type="text" class="form-control" value="">
+                                    <select name="classId">
+                                        <option th:value="0">-归属领域-</option>
+                                        <option th:each="option:${model.templateClassList}" th:text="${option.fieldName}" th:value="${option.id}"></option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-md-2 control-label">数据库</label>
+                                <label class="col-md-2 control-label">模板名</label>
                                 <div class="col-md-5">
-                                    <input name="dbName" type="text" class="form-control" value="">
+                                    <input name="displayName" type="text" class="form-control" value="">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -73,11 +77,12 @@
                                     <input name="preViewArticleUrl" type="text" class="form-control" value="">
                                 </div>
                             </div>
-                            <div id="change">
+
+                            <div id="change" >
                                 <div class="form-group">
                                     <label class="col-md-2 control-label">SP0_S Xpath</label>
                                     <div class="col-md-5">
-                                        <input name="articleSXpath" type="text" class="form-control" value="">
+                                        <input name="spo[][articleSXpath]" type="text" class="form-control" value="">
                                     </div>
                                     <div class="col-md-1">
                                         <button type="button" class="form-control"
@@ -85,13 +90,11 @@
                                         </button>
                                     </div>
                                 </div>
-                                <p><span id="add">新增一项</span></p >
 
-                                <p><span id="remove">减少一项</span></p>
                                 <div class="form-group">
                                     <label class="col-md-2 control-label">SP0_P Xpath</label>
                                     <div class="col-md-5">
-                                        <input name="articlePXpath" type="text" class="form-control" value="">
+                                        <input name="spo[][articlePXpath]" type="text" class="form-control" value="">
                                     </div>
                                     <div class="col-md-1">
                                         <button type="button" class="form-control"
@@ -103,7 +106,7 @@
                                 <div class="form-group">
                                     <label class="col-md-2 control-label">SP0_O Xpath</label>
                                     <div class="col-md-5">
-                                        <input name="articleOXpath" type="text" class="form-control" value="">
+                                        <input name="spo[][articleOXpath]" type="text" class="form-control" value="">
                                     </div>
                                     <div class="col-md-1">
                                         <button type="button" class="form-control"
@@ -111,6 +114,15 @@
                                         </button>
                                     </div>
                                 </div>
+                            </div>
+
+                            <div style="padding: 10px">
+                                <button type="button" onclick="doAdd()" class="btn">
+                                    新增一组抽取规则
+                                </button>
+                                <button type="button" onclick="doSub()" class="btn">
+                                    减少一组抽取规则
+                                </button>
                             </div>
 
                             <div class="form-group">
@@ -179,24 +191,4 @@
     <script src="/js/jquery.serializejson.min.js"></script>
     <script src="/plugins/bootstrap-sweetalert/sweet-alert.min.js"></script>
     <script src="/custom/spiderinfo.js"></script>
-    <script>
-        $(function () {
-            $("#add").click(function (e)
-            {
-
-                $("#change").append('<div class="form-group"><label class="col-md-2 control-label">SP0_SXpath</label><div class="col-md-5"><input name="articleSXpath"type="text"class="form-control"value=""></div><div class="col-md-1"><button type="button"class="form-control"onclick="doPreview("SP0_SXpath预览","preViewArticleUrl","title","titleXpath","xpath")">预览</button></div></div><div class="form-group"><label class="col-md-2 control-label">SP0_PXpath</label><div class="col-md-5"><input name="articlePXpath"type="text"class="form-control"value=""></div><div class="col-md-1"><button type="button"class="form-control"onclick="doPreview("SP0_PXpath预览","preViewArticleUrl","publishTime","timePostXpath","xpath")">预览</button></div></div><div class="form-group"><label class="col-md-2 control-label">SP0_OXpath</label><div class="col-md-5"><input name="articleOXpath"type="text"class="form-control"value=""></div><div class="col-md-1"><button type="button"class="form-control"onclick="doPreview("SP0_OXpath预览","preViewArticleUrl","content","contentXpath","xpath")">预览</button></div></div>')
-            });
-
-            $("#remove").click(function (e)
-            {
-                if($("#change>div").size() <= 3){
-                } else{
-                    $("#change>div").last().remove();
-                    $("#change>div").last().remove();
-                    $("#change>div").last().remove();
-                }
-            });
-        });
-
-    </script>
 </html>
