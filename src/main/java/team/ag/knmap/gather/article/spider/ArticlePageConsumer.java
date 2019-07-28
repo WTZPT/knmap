@@ -25,14 +25,28 @@ public class ArticlePageConsumer implements PageConsumer {
     public void accept(Page page, Template info) {
         page.putField("dbName",info.getDbName());
         try{
-            //列表页
+            //一级列表页
             if(page.getUrl().regex(info.getListPageUrlReg()).match()){
-                resolveListPage(page,info);
+                resolveListPage(page,info.getListPageUrlReg(),info.getArticleUrlXpath(),info.getArticleUrlReg());
                 page.setSkip(true);
-                LOG.info("Skip URL: "+page.getUrl());
-            } else if(page.getUrl().regex(info.getArticleUrlReg()).match()){
+                LOG.info("Skip FirstLevelURL: "+page.getUrl());
+
+            }else if(page.getUrl().regex(info.getArticleUrlReg()).match()){
                 //获取三元组
                 resolverSPO(page,info);
+                LOG.info("Crawl- URL: "+page.getUrl());
+            }else if(!isBlank(info.getSlListPageUrlReg()) && page.getUrl().regex(info.getSlListPageUrlReg()).match()) {
+                //二级列表页
+                resolveListPage(page,info.getSlListPageUrlReg(),info.getSlArticleUrlXpath(),info.getArticleUrlReg());
+                page.setSkip(true);
+                LOG.info("Skip SecondLevelURL: "+page.getUrl());
+            } else if(!isBlank(info.getTlListPageUrlReg())&& page.getUrl().regex(info.getTlListPageUrlReg()).match()) {
+                //三级列表页
+                resolveListPage(page,info.getTlListPageUrlReg(),info.getTlListPageUrlReg(),info.getArticleUrlReg());
+                page.setSkip(true);
+                LOG.info("Skip ThirtLevelURL: "+page.getUrl());
+            }else {
+                page.setSkip(true);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -42,12 +56,14 @@ public class ArticlePageConsumer implements PageConsumer {
     /**
      * 处理列表页面
      * @param page
-     * @param info
+     * @param listPageUrlReg
+     * @param articleUrlReg
+     * @param articleUrlXpath
      */
-    private static void resolveListPage(Page page,Template info){
+    private static void resolveListPage(Page page,String listPageUrlReg,String articleUrlXpath,String articleUrlReg){
         //使用正则表达式来寻找下一页
         List<String> nextPageUrls = parser.getListNextPageUrls(
-                page,info.getListPageUrlReg(),
+                page,listPageUrlReg,
                 ArticleSpiderConstant.MATCH_TYPE_REG
         );
         if(nextPageUrls!=null){
@@ -55,16 +71,16 @@ public class ArticlePageConsumer implements PageConsumer {
         }
         List<String> pageUrls = null;
         // zsz：如果是列表页，提取列表中的文章url
-        if (!isBlank(info.getArticleUrlXpath())){
+        if (!isBlank(articleUrlXpath)){
             pageUrls = parser.getListPageUrls(
-                    page,info.getArticleUrlXpath(),
+                    page,articleUrlXpath,
                     ArticleSpiderConstant.MATCH_TYPE_XPATH
             );
         } else {
             // zsz：如果没有设置xpath就使用正则表达式来获取
             //根据文章网址的正则表达式来获取
             pageUrls = parser.getListPageUrls(
-                    page,info.getArticleUrlReg(),
+                    page,articleUrlReg,
                     ArticleSpiderConstant.MATCH_TYPE_REG
             );
         }

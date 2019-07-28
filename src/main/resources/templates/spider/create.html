@@ -32,36 +32,13 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-md-2 control-label">入口页面</label>
+                                <label class="col-md-2 control-label">第一层级页面（入口页面）</label>
                                 <div class="col-md-5">
                                     <input name="startUrl" type="text" class="form-control" value="">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-md-2 control-label">列表下一页链接正则</label>
-                                <div class="col-md-5">
-                                    <input name="listPageUrlReg" type="text" class="form-control" value="">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-md-2 control-label" style="color: #ff9955">列表区域预览网址</label>
-                                <div class="col-md-5">
-                                    <input name="preViewArticleZoneUrl" type="text" class="form-control" value="">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-md-2 control-label">文章链接正则</label>
-                                <div class="col-md-5">
-                                    <input name="articleUrlReg" type="text" class="form-control" value="">
-                                </div>
-                                <div class="col-md-1">
-                                    <button type="button" class="form-control"
-                                            onclick="doPreview('文章链接预览','preViewArticleZoneUrl','listUrl','articleUrlReg','reg')">预览
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-md-2 control-label">列表区域文章Xpath</label>
+                                <label class="col-md-2 control-label">第一层级抓取区域Xpath</label>
                                 <div class="col-md-5">
                                     <input name="articleUrlXpath" type="text" class="form-control" value="">
                                 </div>
@@ -71,6 +48,54 @@
                                     </button>
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label class="col-md-2 control-label">下一页链接正则</label>
+                                <div class="col-md-5">
+                                    <input name="listPageUrlReg" type="text" class="form-control" value="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-2 control-label">第二层级入口页面正则</label>
+                                <div class="col-md-5">
+                                    <input name="slListPageUrlReg" type="text" class="form-control" value="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-2 control-label">第二层级抓取区域Xpath</label>
+                                <div class="col-md-5">
+                                    <input name="slArticleUrlXpath" type="text" class="form-control" value="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-2 control-label">第三层级入口页面正则</label>
+                                <div class="col-md-5">
+                                    <input name="tlListPageUrlReg" type="text" class="form-control" value="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-2 control-label">第三层级抓取区域Xpath</label>
+                                <div class="col-md-5">
+                                    <input name="tlArticleUrlXpath" type="text" class="form-control" value="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-2 control-label" style="color: #ff9955">列表区域预览网址</label>
+                                <div class="col-md-5">
+                                    <input name="preViewArticleZoneUrl" type="text" class="form-control" value="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-2 control-label">采集目标详情页面正则</label>
+                                <div class="col-md-5">
+                                    <input name="articleUrlReg" type="text" class="form-control" value="">
+                                </div>
+                                <div class="col-md-1">
+                                    <button type="button" class="form-control"
+                                            onclick="doPreview('文章链接预览','preViewArticleZoneUrl','listUrl','articleUrlReg','reg')">预览
+                                    </button>
+                                </div>
+                            </div>
+
                             <div class="form-group">
                                 <label class="col-md-2 control-label" style="color: #ff9955">文章预览网址</label>
                                 <div class="col-md-5">
@@ -155,15 +180,13 @@
                                     <input name="timeout" type="number" class="form-control" value="5000">
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label class="col-md-2 control-label">是否爬取第一页</label>
-                                <div class="col-md-5">
-                                    <input name="gatherFirstPage" type="number" class="form-control" value="1">
-                                    <p> 是否只抓取首页 0为不抓 1为抓</p>
-                                </div>
-                            </div>
-
-
+                            <!--<div class="form-group">-->
+                                <!--<label class="col-md-2 control-label">是否爬取第一页</label>-->
+                                <!--<div class="col-md-5">-->
+                                    <!--<input name="gatherFirstPage" type="number" class="form-control" value="1">-->
+                                    <!--<p> 是否只抓取首页 0为不抓 1为抓</p>-->
+                                <!--</div>-->
+                            <!--</div>-->
                             <div class="form-group">
                                 <label class="col-md-2 control-label">页面下载器</label>
                                 <div class="col-md-5">

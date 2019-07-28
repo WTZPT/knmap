@@ -37,6 +37,18 @@ public class Template {
 
     private String listPageUrlReg;
 
+    //第二层级URL正则 seconde level
+    private String slListPageUrlReg;
+
+    //第三层级URL正则
+    private String tlListPageUrlReg;
+
+    //第二层级列表的XPATH
+    private String SlArticleUrlXpath;
+
+    //第三层级列表的XPATH
+    private String TlArticleUrlXpath;
+
     private String articleUrlReg;
 
     private String articleUrlXpath;

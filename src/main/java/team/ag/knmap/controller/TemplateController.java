@@ -129,6 +129,10 @@ public class TemplateController {
         template.setArticleUrlXpath(templateRequestBody.getArticleUrlXpath());
         template.setCharset(templateRequestBody.getCharset());
         template.setDynamicSite(Integer.valueOf(templateRequestBody.getDynamicSite()));
+        template.setSlArticleUrlXpath(templateRequestBody.getSlArticleUrlXpath());
+        template.setSlListPageUrlReg(templateRequestBody.getSlListPageUrlReg());
+        template.setTlArticleUrlXpath(templateRequestBody.getTlArticleUrlXpath());
+        template.setTlListPageUrlReg(templateRequestBody.getTlListPageUrlReg());
         String sXpath="",pXpath="",oXpath="";
         boolean flag = false;
         for(SPO spo  : templateRequestBody.getSpo()) {

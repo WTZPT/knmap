@@ -27,6 +27,18 @@ public class TemplateRequestVo {
 
     private String preViewArticleUrl;
 
+    //第二层级URL正则 seconde level
+    private String slListPageUrlReg;
+
+    //第三层级URL正则
+    private String tlListPageUrlReg;
+
+    //第二层级列表的XPATH
+    private String slArticleUrlXpath;
+
+    //第三层级列表的XPATH
+    private String tlArticleUrlXpath;
+
     private List<SPO> spo;
 
     private String thread;

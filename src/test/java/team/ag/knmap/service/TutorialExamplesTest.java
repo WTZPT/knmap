@@ -1,5 +1,6 @@
 package team.ag.knmap.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.franz.agraph.repository.AGCatalog;
@@ -17,10 +18,11 @@ import team.ag.knmap.KnmapApplicationTests;
 import team.ag.knmap.entity.Triad;
 import team.ag.knmap.gather.article.pipeline.DbPipeline;
 
+import java.sql.Wrapper;
 import java.util.List;
 
 import static org.junit.Assert.*;
-
+import static org.apache.commons.lang3.StringUtils.isBlank;
 public class TutorialExamplesTest extends KnmapApplicationTests {
     private static final Logger LOG = LogManager.getLogger(TutorialExamplesTest.class);
     private static final String SERVER_URL ="http://47.103.11.118:10035";
@@ -43,8 +45,11 @@ public class TutorialExamplesTest extends KnmapApplicationTests {
     public void example00() throws  Exception{
         AGServer server = new AGServer(SERVER_URL,USERNAME,PASSWORD);
         AGCatalog catalog = server.getCatalog();
+        LOG.info("删除....");
         catalog.deleteRepository("test1");
+        LOG.info("新建....");
         catalog.createRepository("test1");
+        LOG.info("完成 ");
        List<String> list =  catalog.listRepositories();
         for(String str : list) {
             LOG.info("name： "+str);
@@ -85,25 +90,54 @@ public class TutorialExamplesTest extends KnmapApplicationTests {
 
     @Test
     public void dataProcess() throws Exception{
-        IPage<Triad> triadIPage = triadService.page(new Page<Triad>(4,2),null);
+        QueryWrapper<Triad> templateQueryWrapper = new QueryWrapper<>();
+        templateQueryWrapper.lambda()
+                .eq(Triad::isInserted,true);
+        IPage<Triad> triadIPage = triadService.page(new Page<Triad>(4,2),templateQueryWrapper);
         AGValueFactory vf = agRepository.getRepository().getValueFactory();
         for(Triad triad : triadIPage.getRecords()) {
-               String o =  triad.getSpoO();
-                String p = triad.getSpoP();
-                String s = triad.getSpoS();
-                if(o != "") {
-                    IRI SPO_S = vf.createIRI("http://example.org/company/"+ s);
-                    IRI SPO_P = vf.createIRI("http://example.org/ontology/" + p);
-                    IRI SPO_O ;
-                    if(p == "所属地域"){
-                        SPO_O  = vf.createIRI("http://example.org/area/" + o);
-                    } else if(p == "英文名称"){
-                        SPO_O  = vf.createIRI("http://example.org/name/" + o);
-                    } else {
-                        SPO_O  = vf.createIRI("http://example.org/people/" + o);
-                    }
-                    agRepository.add(SPO_S, SPO_P, SPO_O);
+            String o =  triad.getSpoO();
+            String p = triad.getSpoP();
+            String s = triad.getSpoS();
+
+            if(!isBlank(o)) {
+                IRI SPO_S = vf.createIRI("http://example.org/company/"+ s);
+                IRI SPO_P = vf.createIRI("http://example.org/ontology/" + p);
+                IRI SPO_O ;
+                if(p == "所属地域"){
+                    SPO_O  = vf.createIRI("http://example.org/area/" + o);
+                } else if(p == "英文名称"){
+                    SPO_O  = vf.createIRI("http://example.org/name/" + o);
+                } else {
+                    SPO_O  = vf.createIRI("http://example.org/people/" + o);
                 }
+                agRepository.add(SPO_S, SPO_P, SPO_O);
+                LOG.info(s+"  "+p+"  "+o);
+            }
+
+        }
+    }
+
+    @Test
+    public void dataProcess1() {
+        QueryWrapper<Triad> templateQueryWrapper = new QueryWrapper<>();
+        templateQueryWrapper.lambda()
+                .eq(Triad::isInserted,false);
+
+        IPage<Triad> triadIPage = triadService.page(new Page<Triad>(4,2),templateQueryWrapper);
+        AGValueFactory vf = agRepository.getRepository().getValueFactory();
+        for(Triad triad : triadIPage.getRecords()) {
+            String o =  triad.getSpoO();
+            String p = triad.getSpoP();
+            String s = triad.getSpoS();
+            //LOG.info(s+"\n"+o+"\n\n");
+            if(!isBlank(o)&&!isBlank(s)) {
+                LOG.info(s+"  "+p+"  "+o);
+               IRI SPO_S = vf.createIRI("http://example.org/company/"+ s);
+                IRI SPO_P = vf.createIRI("http://example.org/ontology/" + p);
+                IRI SPO_O = vf.createIRI("http://example.org/company/"+ o);
+                agRepository.add(SPO_S, SPO_P, SPO_O);
+            }
         }
     }
 }
