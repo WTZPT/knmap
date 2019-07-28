@@ -26,6 +26,16 @@ public class TemplateClassServiceImpl extends ServiceImpl<TemplateClassMapper, T
         } else {
             return true;
         }
+    }
 
+    @Override
+    public String findDbNameById(long id) {
+        QueryWrapper<TemplateClass> templateClassQueryWrapper = new QueryWrapper<>();
+        templateClassQueryWrapper.lambda()
+                .eq(TemplateClass::getId, id);
+
+        TemplateClass template = getOne(templateClassQueryWrapper);
+
+        return template.getDbName();
     }
 }
