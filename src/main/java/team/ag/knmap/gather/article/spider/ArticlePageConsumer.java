@@ -28,26 +28,26 @@ public class ArticlePageConsumer implements PageConsumer {
             //一级列表页
             if(page.getUrl().regex(info.getListPageUrlReg()).match()){
                 resolveListPage(page,info.getListPageUrlReg(),info.getArticleUrlXpath(),info.getArticleUrlReg());
-                page.setSkip(true);
                 LOG.info("Skip FirstLevelURL: "+page.getUrl());
-
-            }else if(page.getUrl().regex(info.getArticleUrlReg()).match()){
-                //获取三元组
-                resolverSPO(page,info);
-                LOG.info("Crawl- URL: "+page.getUrl());
             }else if(!isBlank(info.getSlListPageUrlReg()) && page.getUrl().regex(info.getSlListPageUrlReg()).match()) {
                 //二级列表页
                 resolveListPage(page,info.getSlListPageUrlReg(),info.getSlArticleUrlXpath(),info.getArticleUrlReg());
-                page.setSkip(true);
                 LOG.info("Skip SecondLevelURL: "+page.getUrl());
             } else if(!isBlank(info.getTlListPageUrlReg())&& page.getUrl().regex(info.getTlListPageUrlReg()).match()) {
                 //三级列表页
                 resolveListPage(page,info.getTlListPageUrlReg(),info.getTlListPageUrlReg(),info.getArticleUrlReg());
-                page.setSkip(true);
                 LOG.info("Skip ThirtLevelURL: "+page.getUrl());
+            }
+
+            //抽取详情页面
+            if(page.getUrl().regex(info.getArticleUrlReg()).match()){
+                //获取三元组
+                resolverSPO(page,info);
+                LOG.info("Crawl- URL: "+page.getUrl());
             }else {
                 page.setSkip(true);
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }

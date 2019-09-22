@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>ECharts</title>
+    <!-- 引入 echarts.js -->
+    <script src="/js/echarts.min.js"></script>
+    <style type="text/css">
+        html,
+        body,
+        #main {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+    <div id="main" style=""></div>
+    <script type="text/javascript">
+        var myChart = echarts.init(document.getElementById('main'));
+        
+        var listdata = ;
+        var links =  ;
+        
+        // 指定图表的配置项和数据
+        var size = 60;
+        var size1 = 30;
+        var yy = 200;
+        var yy1 = 250;
+        option = {
+            title: {
+                text: "知识图谱",
+                top: "top",
+                left: "left",
+                textStyle: {
+                    color: '#f7f7f7'
+                }
+            },
+            tooltip: {
+                formatter: function (x) {
+                    return x.data.des;
+                }
+            },
+            series: [{
+                type: 'graph',
+                layout: 'force',
+                symbolSize: 100,
+                roam: true,
+                edgeSymbol: ['circle', 'arrow'],
+                edgeSymbolSize: [4, 10],
+                edgeLabel: {
+                    normal: {
+                        textStyle: {
+                            fontSize: 20
+                        }
+                    }
+                },
+                force: {
+                    repulsion: 6355003,
+                    edgeLength: [33000, 33000]
+                },
+                draggable: true,
+                itemStyle: {
+                    normal: {
+                        color: '#4b565b'
+                    }
+                },
+                lineStyle: {
+                    normal: {
+                        width: 2,
+                        color: '#4b565b'
+
+                    }
+                },
+                edgeLabel: {
+                    normal: {
+                        show: true,
+                        formatter: function (x) {
+                            return x.data.name;
+                        }
+                    }
+                },
+                label: {
+                    normal: {
+                        show: true,
+                        textStyle: {
+                        }
+                    }
+                },
+                data: listdata,
+                links: links
+                // categories: texts,
+
+            }]
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+
+
+
+
+
+
+
+
+
+
+
+        // 基于准备好的dom，初始化echarts实例
+
+    </script>
+</body>
+
+</html>

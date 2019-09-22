@@ -28,6 +28,8 @@ public class AllegrographConfig {
         return conn;
     }
 
+
+
     @Bean
     public AGCatalog AGCatalog(){
         AGServer server = new AGServer(SERVER_URL,USERNAME,PASSWORD);

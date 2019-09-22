@@ -27,8 +27,7 @@ public class DbPipeline implements Pipeline {
     @Autowired
     SpiderService spiderService;
 
-    @Autowired
-    AGRepositoryConnection agRepository;
+
 
     @Autowired
     TriadService triadService;
@@ -46,7 +45,7 @@ public class DbPipeline implements Pipeline {
 
     @Override
     public void process(ResultItems resultItems, Task task) {
-        AGValueFactory vf = agRepository.getRepository().getValueFactory();
+
         try {
             String s = resultItems.get(ArticleSpiderConstant.SPO_S).toString();
             String p = resultItems.get(ArticleSpiderConstant.SPO_P).toString();
@@ -56,10 +55,7 @@ public class DbPipeline implements Pipeline {
                 String[] pList = TextParser.splitMatchWithWaterLine(p);
                 String[] oList = TextParser.splitMatchWithWaterLine(o);
                 for(int i = 0; i < sList.length; i++){
-                    IRI SPO_S = vf.createIRI("http://example.org/s/" + sList[i]);
-                    IRI SPO_P = vf.createIRI("http://example.org/ontology/" + pList[i]);
-                    IRI SPO_O = vf.createIRI("http://example.org/o/" + oList[i]);
-                    //agRepository.add(SPO_S, SPO_P, SPO_O);
+                    LOG.info(TextParser.getNewContent(sList[i])+"  "+TextParser.getNewContent(pList[i])+"  "+TextParser.getNewContent(oList[i]));
                     Triad triad = new Triad(classId,templateId,TextParser.getNewContent(sList[i]),
                             TextParser.getNewContent(pList[i]),TextParser.getNewContent(oList[i]),false);
                     triadService.save(triad);

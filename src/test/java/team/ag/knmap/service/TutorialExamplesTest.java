@@ -10,11 +10,14 @@ import com.franz.agraph.repository.AGValueFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Literal;
 import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
 import org.eclipse.rdf4j.repository.RepositoryResult;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import team.ag.knmap.KnmapApplicationTests;
+import team.ag.knmap.commom.AGDBConnection;
 import team.ag.knmap.entity.Triad;
 import team.ag.knmap.gather.article.pipeline.DbPipeline;
 
@@ -45,10 +48,8 @@ public class TutorialExamplesTest extends KnmapApplicationTests {
     public void example00() throws  Exception{
         AGServer server = new AGServer(SERVER_URL,USERNAME,PASSWORD);
         AGCatalog catalog = server.getCatalog();
-        LOG.info("删除....");
-        catalog.deleteRepository("test1");
-        LOG.info("新建....");
-        catalog.createRepository("test1");
+
+        catalog.createRepository("86a3a30aac76da66");
         LOG.info("完成 ");
        List<String> list =  catalog.listRepositories();
         for(String str : list) {
@@ -58,6 +59,10 @@ public class TutorialExamplesTest extends KnmapApplicationTests {
 
     @Autowired
     AGRepositoryConnection agRepository;
+
+    @Autowired
+    AGDBConnection agdbConnection;
+
 
     @Test
     public void example11() throws Exception {
@@ -106,7 +111,7 @@ public class TutorialExamplesTest extends KnmapApplicationTests {
                 IRI SPO_O ;
                 if(p == "所属地域"){
                     SPO_O  = vf.createIRI("http://example.org/area/" + o);
-                } else if(p == "英文名称"){
+                } else if(p == "英文名称" || p == "股票简称"){
                     SPO_O  = vf.createIRI("http://example.org/name/" + o);
                 } else {
                     SPO_O  = vf.createIRI("http://example.org/people/" + o);
@@ -122,7 +127,7 @@ public class TutorialExamplesTest extends KnmapApplicationTests {
     public void dataProcess1() {
         QueryWrapper<Triad> templateQueryWrapper = new QueryWrapper<>();
         templateQueryWrapper.lambda()
-                .eq(Triad::isInserted,false);
+                .eq(Triad::getSpoP,"参股控股公司");
 
         IPage<Triad> triadIPage = triadService.page(new Page<Triad>(4,2),templateQueryWrapper);
         AGValueFactory vf = agRepository.getRepository().getValueFactory();
@@ -132,12 +137,67 @@ public class TutorialExamplesTest extends KnmapApplicationTests {
             String s = triad.getSpoS();
             //LOG.info(s+"\n"+o+"\n\n");
             if(!isBlank(o)&&!isBlank(s)) {
-                LOG.info(s+"  "+p+"  "+o);
                IRI SPO_S = vf.createIRI("http://example.org/company/"+ s);
                 IRI SPO_P = vf.createIRI("http://example.org/ontology/" + p);
-                IRI SPO_O = vf.createIRI("http://example.org/company/"+ o);
+                IRI SPO_O = vf.createIRI("http://example.org/company/" +o);
+             //   Literal SPO_O = vf.createLiteral(o);
                 agRepository.add(SPO_S, SPO_P, SPO_O);
+
+                LOG.info(s+"  "+p+"  "+o);
             }
         }
     }
+
+
+    @Test
+    public void dataProcess2() {
+        QueryWrapper<Triad> templateQueryWrapper = new QueryWrapper<>();
+        AGValueFactory vf = agRepository.getRepository().getValueFactory();
+        templateQueryWrapper.lambda()
+                .eq(Triad::getSpoP,"十大股东");
+        IPage<Triad> triadIPage = triadService.page(new Page<Triad>(4,2),templateQueryWrapper);
+        for(Triad triad : triadIPage.getRecords()) {
+            String o =  triad.getSpoO();
+            String p = triad.getSpoP();
+            String s = triad.getSpoS();
+            IRI SPO_O;
+            if(!isBlank(o)&&!isBlank(s)) {
+                LOG.info(s+"  "+p+"  "+o);
+                IRI SPO_S = vf.createIRI("http://example.org/company/"+ s);
+                IRI SPO_P = vf.createIRI("http://example.org/ontology/" + p);
+                if(o.length() <= 4)
+                     SPO_O = vf.createIRI("http://example.org/people/"+ o);
+                else
+                    SPO_O = vf.createIRI("http://example.org/company/"+ o);
+                agRepository.add(SPO_S, SPO_P, SPO_O);
+                LOG.info(s+"  "+p+"  "+o);
+            }
+        }
+    }
+
+    @Test
+    public void dataProcess3() {
+        AGRepositoryConnection conn = agdbConnection.create("86a3a30aac76da66");
+        AGValueFactory vf = conn.getValueFactory();
+        QueryWrapper<Triad> templateQueryWrapper = new QueryWrapper<>();
+        templateQueryWrapper.lambda()
+                .eq(Triad::getClassId,133);
+
+        IPage<Triad> triadIPage = triadService.page(new Page<Triad>(4,2),templateQueryWrapper);
+        for(Triad triad : triadIPage.getRecords()) {
+            String o =  triad.getSpoO();
+            String p = triad.getSpoP();
+            String s = triad.getSpoS();
+
+            if(!isBlank(o)&&!isBlank(s)) {
+                IRI SPO_S = vf.createIRI("http://example.org/place/"+ s);
+                IRI SPO_P = vf.createIRI("http://example.org/place/" + p);
+                IRI SPO_O = vf.createIRI("http://example.org/place/" + o);
+                conn.add(SPO_S, SPO_P, SPO_O);
+                LOG.info(s+"  "+p+"  "+o);
+            }
+        }
+
+    }
+
 }
